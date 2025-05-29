@@ -261,9 +261,31 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
     return empty;
   }
 
-  return SymbolInfo{.name = std::unique_ptr<char, decltype(std::addressof(k2::free))>{static_cast<char *>(k2::alloc(name_len + 1)), k2::free},
-                    .filename = std::unique_ptr<char, decltype(std::addressof(k2::free))>{static_cast<char *>(k2::alloc(filename_len + 1)), k2::free},
-                    .lineno = 0};
+  // +1 since we get non-null-terminated strings from platform and we want to null-terminate them on our side
+  auto* name{static_cast<char*>(k2::alloc(name_len + 1))};
+  if (name == nullptr) [[unlikely]] {
+    return empty;
+  }
+
+  auto* filename{static_cast<char*>(k2::alloc(filename_len + 1))};
+  if (filename == nullptr) [[unlikely]] {
+    return empty;
+  }
+
+//  ::SymbolInfo symbol_info{.name = name, .filename = filename, .lineno = 0};
+//  if (auto error_code{k2_resolve_symbol(addr, std::addressof(symbol_info))}; error_code != k2::errno_ok) [[unlikely]] {
+//    k2::free(filename);
+//    k2::free(name);
+//    return empty;
+//  }
+
+  // null-terminate
+  name[name_len] = '\0';
+  filename[filename_len] = '\0';
+
+  return k2::SymbolInfo{.name = std::unique_ptr<char, decltype(std::addressof(k2::free))>{name, k2::free},
+                        .filename = std::unique_ptr<char, decltype(std::addressof(k2::free))>{filename, k2::free},
+                        .lineno = 0};
 }
 
 inline int32_t code_segment_offset(uint64_t* offset) noexcept {
