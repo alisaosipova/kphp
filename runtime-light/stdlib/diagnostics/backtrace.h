@@ -31,8 +31,8 @@ inline auto backtrace_addresses(std::span<void* const> addresses) noexcept {
  * `backtrace_symbol`s stops resolving `addresses` when it finds the first address that cannot be resolved.
  * As a result, the length of the output may be non-zero but less than the length of the input `addresses`.
  * */
-inline auto backtrace_symbols(std::span<void* const> addresses) noexcept {
-  return addresses | std::views::transform([](void* addr) noexcept { return k2::resolve_symbol(addr).value(); });
-}
+//inline auto backtrace_symbols(std::span<void* const> addresses) noexcept {
+//  return addresses | std::views::transform([](void* addr) noexcept { return k2::resolve_symbol(addr).value(); });
+//}
 
 } // namespace kphp::diagnostic
