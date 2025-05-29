@@ -228,6 +228,7 @@ class WebServerAutoTestCase(BaseTestCase):
                 k2_server_bin=cls.web_server_bin,
                 working_dir=cls.web_server_working_dir,
                 kphp_build_dir=cls.kphp_builder.kphp_build_tmp_dir)
+            os.environ["RUST_LOG"] = "debug"
         else:
             cls.web_server = KphpServer(
                 kphp_server_bin=cls.web_server_bin,
