@@ -16,17 +16,13 @@
 namespace error_handling_impl_ {
 
 inline array<array<string>> format_backtrace_symbols(std::span<void* const> backtrace) noexcept {
-  auto resolved_backtrace{kphp::diagnostic::backtrace_symbols(backtrace)};
-  if (resolved_backtrace.empty()) {
-    return {};
-  }
-
   array<array<string>> backtrace_symbols{array_size{static_cast<int64_t>(backtrace.size()), true}};
   const string function_key{"function"};
   const string filename_key{"file"};
   const string line_key{"line"};
 
-  for (const k2::SymbolInfo& symbol_info : resolved_backtrace) {
+  for (void *addr : backtrace) {
+    const k2::SymbolInfo & symbol_info = k2::resolve_symbol(addr).value();
     array<string> frame_info{array_size{3, false}};
     frame_info.set_value(function_key, string{symbol_info.name.get()});
     frame_info.set_value(filename_key, string{symbol_info.filename.get()});
