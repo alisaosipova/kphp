@@ -87,9 +87,7 @@ inline void* realloc_checked(void* ptr, size_t old_size, size_t align, size_t ne
 }
 
 inline void free(void* ptr) noexcept {
-  if (ptr != nullptr) [[likely]] {
-    k2_free(ptr);
-  }
+  k2_free(ptr);
 }
 
 inline void free_checked(void* ptr, size_t size, size_t align) noexcept {

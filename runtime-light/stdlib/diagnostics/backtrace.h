@@ -34,7 +34,7 @@ inline auto backtrace_addresses(std::span<void* const> addresses) noexcept {
 inline auto backtrace_symbols(std::span<void* const> addresses) noexcept {
   return addresses | std::views::transform([](void* addr) noexcept { return k2::resolve_symbol(addr); }) |
          std::views::take_while([](const auto& value) noexcept { return value.has_value(); }) |
-         std::views::transform([](std::expected<k2::SymbolInfo, int32_t>&& value) noexcept { return std::move(value).value(); });
+         std::views::transform([](const std::expected<k2::SymbolInfo, int32_t>& value) noexcept { return 42; });
 }
 
 } // namespace kphp::diagnostic
