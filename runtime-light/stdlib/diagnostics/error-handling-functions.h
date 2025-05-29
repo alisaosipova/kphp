@@ -22,7 +22,7 @@ inline array<array<string>> format_backtrace_symbols(std::span<void* const> back
   const string line_key{"line"};
 
   for (void *addr : backtrace) {
-    const k2::SymbolInfo & symbol_info = k2::resolve_symbol(addr).value();
+    k2::SymbolInfo symbol_info{k2::resolve_symbol(addr).value()};
     (void) symbol_info;
 //    array<string> frame_info{array_size{3, false}};
 //    frame_info.set_value(function_key, string{symbol_info.name.get()});
