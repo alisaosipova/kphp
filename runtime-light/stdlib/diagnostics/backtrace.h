@@ -33,7 +33,6 @@ inline auto backtrace_addresses(std::span<void* const> addresses) noexcept {
  * */
 inline auto backtrace_symbols(std::span<void* const> addresses) noexcept {
   return addresses | std::views::transform([](void* addr) noexcept { return k2::resolve_symbol(addr); }) |
-         std::views::take_while([](auto&& value) noexcept { return std::forward<decltype(value)>(value).has_value(); }) |
          std::views::transform([](auto&& value) noexcept { return std::forward<decltype(value)>(value).value(); });
 }
 
