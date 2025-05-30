@@ -21,10 +21,10 @@ inline array<array<string>> format_backtrace_symbols(std::span<void* const> back
   const string filename_key{"file"};
   const string line_key{"line"};
 
-  k2::SymbolInfo symbol_info{k2::resolve_symbol(backtrace[0])};
+
 
   for (void *addr : backtrace) {
-
+    k2::SymbolInfo symbol_info{k2::resolve_symbol(addr)};
 //    array<string> frame_info{array_size{3, false}};
 //    frame_info.set_value(function_key, string{symbol_info.name.get()});
 //    frame_info.set_value(filename_key, string{symbol_info.filename.get()});
