@@ -266,7 +266,7 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
   if (filename == nullptr) [[unlikely]] {
     return {};
   }
-  auto error_code{k2_resolve_symbol(addr, name)};
+  auto _{k2_resolve_symbol(addr, name)};
 
   k2::free(name);
 
