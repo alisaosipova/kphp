@@ -272,12 +272,12 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
     return empty;
   }
 
-//  ::SymbolInfo symbol_info{.name = name, .filename = filename, .lineno = 0};
-//  if (auto error_code{k2_resolve_symbol(addr, std::addressof(symbol_info))}; error_code != k2::errno_ok) [[unlikely]] {
-//    k2::free(filename);
-//    k2::free(name);
-//    return empty;
-//  }
+  ::SymbolInfo symbol_info{.name = name, .filename = filename, .lineno = 0};
+  if (auto error_code{k2_resolve_symbol(addr, std::addressof(symbol_info))}; error_code != k2::errno_ok) [[unlikely]] {
+    k2::free(filename);
+    k2::free(name);
+    return empty;
+  }
 
   // null-terminate
   name[name_len] = '\0';
