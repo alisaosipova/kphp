@@ -241,9 +241,7 @@ inline int32_t iconv(size_t* result, void* iconv_cd, char** inbuf, size_t* inbyt
   return k2_iconv(result, iconv_cd, inbuf, inbytesleft, outbuf, outbytesleft);
 }
 
-struct SymbolInfo {
-
-};
+struct SymbolInfo {};
 
 inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
 
@@ -266,7 +264,8 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
   if (filename == nullptr) [[unlikely]] {
     return {};
   }
-  auto _{k2_resolve_symbol(addr, name)};
+  ::SymbolInfo info{.name = name, .filename = filename, .lineno = 0};
+  auto _{k2_resolve_symbol(addr, &info)};
 
   k2::free(name);
 
