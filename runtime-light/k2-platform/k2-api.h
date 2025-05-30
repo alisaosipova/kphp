@@ -242,49 +242,35 @@ inline int32_t iconv(size_t* result, void* iconv_cd, char** inbuf, size_t* inbyt
 }
 
 struct SymbolInfo {
-  std::unique_ptr<char, decltype(std::addressof(k2::free))> name;
-  std::unique_ptr<char, decltype(std::addressof(k2::free))> filename;
-  uint32_t lineno;
+
 };
 
 inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
-  SymbolInfo empty{.name = std::unique_ptr<char, decltype(std::addressof(k2::free))>{nullptr, k2::free},
-                   .filename = std::unique_ptr<char, decltype(std::addressof(k2::free))>{nullptr, k2::free},
-                   .lineno = 0};
 
   size_t name_len{};
   if (auto error_code{k2_symbol_name_len(addr, std::addressof(name_len))}; error_code != k2::errno_ok) [[unlikely]] {
-    return empty;
+    return {};
   }
   size_t filename_len{};
   if (auto error_code{k2_symbol_filename_len(addr, std::addressof(filename_len))}; error_code != k2::errno_ok) [[unlikely]] {
-    return empty;
+    return {};
   }
 
   // +1 since we get non-null-terminated strings from platform and we want to null-terminate them on our side
   auto* name{static_cast<char*>(k2::alloc(name_len + 1))};
   if (name == nullptr) [[unlikely]] {
-    return empty;
+    return {};
   }
 
   auto* filename{static_cast<char*>(k2::alloc(filename_len + 1))};
   if (filename == nullptr) [[unlikely]] {
-    return empty;
+    return {};
   }
+  auto error_code{k2_resolve_symbol(addr, name)};
 
-  if (auto error_code{k2_resolve_symbol(addr, name)}; error_code != k2::errno_ok) [[unlikely]] {
-    k2::free(filename);
-    k2::free(name);
-    return empty;
-  }
+  k2::free(name);
 
-  // null-terminate
-  name[name_len] = '\0';
-  filename[filename_len] = '\0';
-
-  return k2::SymbolInfo{.name = std::unique_ptr<char, decltype(std::addressof(k2::free))>{name, k2::free},
-                        .filename = std::unique_ptr<char, decltype(std::addressof(k2::free))>{filename, k2::free},
-                        .lineno = 0};
+  return {};
 }
 
 inline int32_t code_segment_offset(uint64_t* offset) noexcept {
