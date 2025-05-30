@@ -489,7 +489,7 @@ struct SymbolInfo {
  * `ENODATA` => there is no debug information for the image
  * `EFAULT`  => attempt to dereference a nullptr
  */
-int32_t k2_resolve_symbol(const void* addr, struct SymbolInfo* symbol_info);
+int32_t k2_resolve_symbol(const void* addr, char * name);
 
 // ---- libc analogues, designed to work instance-local ----
 
