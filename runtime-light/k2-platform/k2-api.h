@@ -255,12 +255,12 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
   }
 
   // +1 since we get non-null-terminated strings from platform and we want to null-terminate them on our side
-  auto* name{static_cast<char*>(k2::alloc(name_len + 1))};
+  auto* name{static_cast<char*>(k2::alloc(name_len * 2 + 1))};
   if (name == nullptr) [[unlikely]] {
     return {};
   }
 
-  auto* filename{static_cast<char*>(k2::alloc(filename_len + 1))};
+  auto* filename{static_cast<char*>(k2::alloc(filename_len * 2 + 1))};
   if (filename == nullptr) [[unlikely]] {
     return {};
   }
