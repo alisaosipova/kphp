@@ -266,8 +266,8 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
   }
   ::SymbolInfo info{.name = name, .filename = filename, .lineno = 0};
   auto _{k2_resolve_symbol(addr, &info)};
-
-  k2::free(name);
+//
+//  k2::free(name);
 
   return {};
 }
