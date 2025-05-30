@@ -267,7 +267,7 @@ inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
     return empty;
   }
 
-  printf("name ptr %p\n", name);
+  printf("name ptr %p, len %zu\n", name, name_len);
 
   auto* filename{static_cast<char*>(k2::alloc(filename_len + 1))};
   if (filename == nullptr) [[unlikely]] {
