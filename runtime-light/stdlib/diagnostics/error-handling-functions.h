@@ -24,6 +24,7 @@ inline array<array<string>> format_backtrace_symbols(std::span<void* const> back
 
 
   k2::SymbolInfo symbol_info{k2::resolve_symbol(backtrace[0])};
+  (void) symbol_info;
   return backtrace_symbols;
 }
 
