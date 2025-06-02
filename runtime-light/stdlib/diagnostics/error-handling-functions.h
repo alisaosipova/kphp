@@ -24,6 +24,7 @@ inline array<array<string>> format_backtrace_symbols(std::span<void* const> back
 
 
   for (void *addr : backtrace) {
+    php_warning("try resolve addr %p\n", addr);
     k2::SymbolInfo symbol_info{k2::resolve_symbol(addr)};
 //    array<string> frame_info{array_size{3, false}};
 //    frame_info.set_value(function_key, string{symbol_info.name.get()});
