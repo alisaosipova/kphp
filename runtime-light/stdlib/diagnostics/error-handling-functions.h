@@ -21,9 +21,9 @@ inline array<array<string>> format_backtrace_symbols(std::span<void* const> back
   const string filename_key{"file"};
   const string line_key{"line"};
 
-
-
-  k2::SymbolInfo symbol_info{k2::resolve_symbol(backtrace[0])};
+  void * addr{backtrace[1]};
+  php_warning("here try resolve %p\n", addr);
+  k2::SymbolInfo symbol_info{k2::resolve_symbol(addr)};
   (void) symbol_info;
   return backtrace_symbols;
 }
