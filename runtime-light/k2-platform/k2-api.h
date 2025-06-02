@@ -244,7 +244,6 @@ inline int32_t iconv(size_t* result, void* iconv_cd, char** inbuf, size_t* inbyt
 struct SymbolInfo {};
 
 inline k2::SymbolInfo resolve_symbol(void* addr) noexcept {
-  php_warning("try resolve_symbol %p\n", addr);
   size_t name_len{};
   if (auto error_code{k2_symbol_name_len(addr, std::addressof(name_len))}; error_code != k2::errno_ok) [[unlikely]] {
     return {};

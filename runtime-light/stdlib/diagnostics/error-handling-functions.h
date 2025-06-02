@@ -21,10 +21,19 @@ inline array<array<string>> format_backtrace_symbols(std::span<void* const> back
   const string filename_key{"file"};
   const string line_key{"line"};
 
-  void * addr{backtrace[1]};
-  php_warning("here try resolve %p\n", addr);
-  k2::SymbolInfo symbol_info{k2::resolve_symbol(addr)};
-  (void) symbol_info;
+
+
+  for (void *addr : backtrace) {
+    k2::SymbolInfo symbol_info{k2::resolve_symbol(addr)};
+    (void) symbol_info;
+//    array<string> frame_info{array_size{3, false}};
+//    frame_info.set_value(function_key, string{symbol_info.name.get()});
+//    frame_info.set_value(filename_key, string{symbol_info.filename.get()});
+//    frame_info.set_value(line_key, string{static_cast<int64_t>(symbol_info.lineno)});
+//
+//    backtrace_symbols.emplace_back(std::move(frame_info));
+  }
+
   return backtrace_symbols;
 }
 
