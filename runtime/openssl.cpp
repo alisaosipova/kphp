@@ -777,7 +777,7 @@ static Stream ssl_stream_socket_client(const string& url, int64_t& error_number,
   SSL_set_tlsext_host_name(ssl_handle, host.c_str());
 #endif
 
-  SSL_set_connect_state(ssl_handle); // TODO remove
+
 
   while (true) {
     int connect_result = SSL_connect(ssl_handle);
@@ -1069,12 +1069,14 @@ bool ssl_stream_set_option(const Stream& stream, int64_t option, int64_t value) 
   case STREAM_SET_WRITE_BUFFER_OPTION:
   case STREAM_SET_READ_BUFFER_OPTION:
     if (value != 0) {
-      // TODO
-      //         BIO_set_read_buffer_size (SSL_get_rbio (c->ssl_handle), value);
-      //         BIO_set_write_buffer_size (SSL_get_wbio (c->ssl_handle), value);
-
-      php_warning("SSL wrapper doesn't support buffered input/output");
-      return false;
+      BIO* rbio = SSL_get_rbio(c->ssl_handle);
+      BIO* wbio = SSL_get_wbio(c->ssl_handle);
+      if (rbio) {
+        BIO_set_read_buffer_size(rbio, value);
+      }
+      if (wbio) {
+        BIO_set_write_buffer_size(wbio, value);
+      }
     }
     return true;
   default:

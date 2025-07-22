@@ -141,7 +141,7 @@ kphp_event_timer* allocate_event_timer(double wakeup_time, int wakeup_callback_i
 void remove_event_timer(kphp_event_timer* et) {
   int i = (et->heap_index & EVENT_TIMERS_HEAP_INDEX_MASK);
   php_assert(i > 0 && i <= event_timers_heap_size && event_timers_heap[i] == et);
-  et->heap_index = 0; // TODO remove after testing
+  et->heap_index = 0;
   dl::deallocate(et, sizeof(kphp_event_timer));
 
   et = event_timers_heap[event_timers_heap_size--];
@@ -167,7 +167,7 @@ int remove_expired_event_timers() {
 }
 
 int wait_net(int timeout_ms) {
-  bool some_expires = false; // TODO remove assert
+  bool some_expires = false;
   double begin_time = get_precise_now();
   double expire_event_time = 0.0;
   //  fprintf (stderr, "wait_net_begin\n");

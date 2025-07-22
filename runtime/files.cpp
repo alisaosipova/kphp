@@ -141,7 +141,7 @@ bool f$chmod(const string& s, int64_t mode) {
 }
 
 void f$clearstatcache() {
-  // TODO
+  // No stat cache is implemented in KPHP runtime, so nothing to clear.
 }
 
 bool f$copy(const string& from, const string& to) {

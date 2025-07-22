@@ -653,8 +653,6 @@ bool wait_without_result_synchronously_safe(int64_t resumable_id) {
 }
 
 static bool wait_forked_resumable(int64_t resumable_id, double dead_line_time) {
-  php_assert(dead_line_time > get_precise_now()); // TODO remove asserts
-  php_assert(in_main_thread());                   // TODO remove asserts
   php_assert(is_forked_resumable_id(resumable_id));
 
   forked_resumable_info* resumable = get_forked_resumable_info(resumable_id);
@@ -686,7 +684,7 @@ static bool wait_forked_resumable(int64_t resumable_id, double dead_line_time) {
 }
 
 static bool wait_started_resumable(int64_t resumable_id) noexcept {
-  php_assert(in_main_thread()); // TODO remove asserts
+  php_assert(in_main_thread());
   php_assert(is_started_resumable_id(resumable_id));
 
   started_resumable_info* resumable = get_started_resumable_info(resumable_id);
@@ -1046,8 +1044,8 @@ bool f$wait_queue_empty(int64_t queue_id) {
 }
 
 static void wait_queue_next(int64_t queue_id, double timeout) {
-  php_assert(timeout > get_precise_now()); // TODO remove asserts
-  php_assert(in_main_thread());            // TODO remove asserts
+  php_assert(timeout > get_precise_now());
+  php_assert(in_main_thread());
   php_assert(is_wait_queue_id(queue_id));
 
   wait_queue* q = get_wait_queue(queue_id);

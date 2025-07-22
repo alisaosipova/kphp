@@ -12,6 +12,7 @@
 #include "runtime/context/runtime-context.h"
 #include "server/php-engine-vars.h"
 #include "server/php-runner.h"
+#include "runtime/datetime/datetime_functions.h"
 
 // these constants are a part of the private timelib API, but PHP uses them internally;
 // we define them here locally
@@ -302,8 +303,7 @@ std::pair<timelib_time*, string> php_timelib_date_initialize(const string& tz_na
   } else if (t->tz_info) {
     tzi = t->tz_info;
   } else {
-    // TODO: use f$date_default_timezone_get()
-    tzi = vk::singleton<TzinfoCache>::get().get_tzinfo(PHP_TIMELIB_TZ_MOSCOW);
+    tzi = vk::singleton<TzinfoCache>::get().get_tzinfo(f$date_default_timezone_get().c_str());
   }
 
   timelib_time* now = timelib_time_ctor();
